@@ -82,24 +82,22 @@
                     </Border>
 
                     <!-- Logo banner -->
-                    <Border DockPanel.Dock="Top" Background="#CC060e0c"
-                            BorderBrush="#FF8b2010" BorderThickness="0,0,0,1">
+                    <Border DockPanel.Dock="Top" Height="80" Background="#CC060e0c"
+                            BorderBrush="#FF8b2010" BorderThickness="0,0,0,1" ClipToBounds="True">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="280"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Viewbox Grid.Column="0" Stretch="UniformToFill" MaxHeight="90" HorizontalAlignment="Right">
-                                <Image Source="assets/derpdog.png"
-                                       RenderOptions.BitmapScalingMode="HighQuality" Height="419" Width="524"/>
-                            </Viewbox>
-                            <Image Grid.Column="1" Source="assets/logo.png" Stretch="Uniform" MaxHeight="110"
+                            <Image Grid.Column="0" Source="assets/derpdog.png" Stretch="Uniform"
+                                   HorizontalAlignment="Right" VerticalAlignment="Center"
                                    RenderOptions.BitmapScalingMode="HighQuality"/>
-                            <Viewbox Grid.Column="2" Stretch="UniformToFill" MaxHeight="90" HorizontalAlignment="Left">
-                                <Image Source="assets/algar2.png"
-                                       RenderOptions.BitmapScalingMode="HighQuality" Height="93" Width="119"/>
-                            </Viewbox>
+                            <Image Grid.Column="1" Source="assets/logo.png" Stretch="Uniform"
+                                   RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <Image Grid.Column="2" Source="assets/algar2.png" Stretch="Uniform"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Grid>
                     </Border>
 
