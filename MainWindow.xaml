@@ -1,0 +1,190 @@
+<Window x:Class="RGMercsPatcher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="RGMercs Patcher"
+        Width="604" Height="697"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style x:Key="PatcherButton" TargetType="Button">
+            <Setter Property="Background" Value="#CC3a0808"/>
+            <Setter Property="Foreground" Value="#FFe8dcc8"/>
+            <Setter Property="BorderBrush" Value="#FF8b2010"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#CC5a1010"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#CC1a0404"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.35"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ConfigTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="#990a1210"/>
+            <Setter Property="Foreground" Value="#FFe8dcc8"/>
+            <Setter Property="BorderBrush" Value="#FF8b2010"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="4,3"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="CaretBrush" Value="#FFe8b84a"/>
+            <Setter Property="SelectionBrush" Value="#FF8b2010"/>
+        </Style>
+    </Window.Resources>
+
+    <!-- Root with drop shadow -->
+    <Border CornerRadius="8" Margin="8">
+        <Border.Effect>
+            <DropShadowEffect Color="Black" BlurRadius="20" ShadowDepth="4" Opacity="0.8"/>
+        </Border.Effect>
+        <Border CornerRadius="8" ClipToBounds="True">
+            <Grid>
+                <!-- Background image -->
+                <Image Source="assets/background.png" Stretch="None"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       RenderOptions.BitmapScalingMode="HighQuality"/>
+                <Rectangle Fill="#D0060e0c"/>
+
+                <DockPanel LastChildFill="True">
+                    <!-- Title bar -->
+                    <Border DockPanel.Dock="Top" Background="#DD040c0a" Height="36"
+                            MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                        <Button Content="✕" Width="36" Height="36" HorizontalAlignment="Right"
+                                Style="{StaticResource PatcherButton}"
+                                BorderThickness="0" Background="Transparent"
+                                Click="CloseButton_Click"/>
+                    </Border>
+
+                    <!-- Logo banner -->
+                    <Border DockPanel.Dock="Top" Background="#CC060e0c"
+                            BorderBrush="#FF8b2010" BorderThickness="0,0,0,1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Viewbox Grid.Column="0" Stretch="UniformToFill" MaxHeight="90" HorizontalAlignment="Right">
+                                <Image Source="assets/derpdog.png"
+                                       RenderOptions.BitmapScalingMode="HighQuality" Height="419" Width="524"/>
+                            </Viewbox>
+                            <Image Grid.Column="1" Source="assets/logo.png" Stretch="Uniform" MaxHeight="110"
+                                   RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <Viewbox Grid.Column="2" Stretch="UniformToFill" MaxHeight="90" HorizontalAlignment="Left">
+                                <Image Source="assets/algar2.png"
+                                       RenderOptions.BitmapScalingMode="HighQuality" Height="93" Width="119"/>
+                            </Viewbox>
+                        </Grid>
+                    </Border>
+
+                    <!-- Bottom bar: version right -->
+                    <Grid DockPanel.Dock="Bottom" Margin="8,0,8,6">
+                        <TextBlock x:Name="VersionText" HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   Foreground="#FF706050" FontFamily="Segoe UI" FontSize="10"/>
+                    </Grid>
+
+                    <!-- Content -->
+                    <DockPanel Margin="20,14,20,54" LastChildFill="True">
+
+                        <!-- Fixed top section -->
+                        <StackPanel DockPanel.Dock="Top">
+
+                            <!-- Lua Folder -->
+                            <TextBlock Text="Lua Folder" Foreground="#FFe8b84a"
+                                       FontFamily="Segoe UI" FontSize="11" Margin="0,0,0,4"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="8"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="LuaDirTextBox" Grid.Column="0"
+                                         Style="{StaticResource ConfigTextBox}"
+                                         TextChanged="LuaDirTextBox_TextChanged"/>
+                                <Button Grid.Column="2" Content="Browse..." Width="72"
+                                        Style="{StaticResource PatcherButton}"
+                                        Click="BrowseButton_Click"/>
+                            </Grid>
+
+                            <!-- Patch Notes -->
+                            <TextBlock Text="Patch Notes" Foreground="#FFe8b84a"
+                                       FontFamily="Segoe UI Semibold" FontSize="11" Margin="0,10,0,4"/>
+                            <Border Height="205" Background="#88060e0a" BorderBrush="#FF8b2010"
+                                    BorderThickness="1" CornerRadius="3" Margin="0,0,0,10">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                              HorizontalScrollBarVisibility="Disabled" Padding="8,6">
+                                    <TextBlock x:Name="PatchNotesText"
+                                               Foreground="#FFe8dcc8" FontFamily="Consolas" FontSize="11"
+                                               TextWrapping="Wrap" LineHeight="18"
+                                               Text="No patch notes available."/>
+                                </ScrollViewer>
+                            </Border>
+
+                            <Separator Background="#448b2010" Margin="0,0,0,12"/>
+
+                            <!-- Action button + progress -->
+                            <Button x:Name="ActionButton" Content="Check for Updates"
+                                    Style="{StaticResource PatcherButton}"
+                                    HorizontalAlignment="Stretch" Height="36"
+                                    Click="ActionButton_Click"/>
+
+                            <Separator Background="#448b2010" Margin="0,0,0,12"/>
+
+                        </StackPanel>
+
+                        <!-- Patch Status label -->
+                        <TextBlock DockPanel.Dock="Top" Text="Patch Status" Foreground="#FFe8b84a"
+                                   FontFamily="Segoe UI Semibold" FontSize="11" Margin="0,0,0,4"/>
+
+                        <!-- Patch status log (fills remaining space) -->
+                        <Border Background="#88060e0a" BorderBrush="#FF8b2010"
+                                BorderThickness="1" CornerRadius="3">
+                            <ScrollViewer x:Name="LogScroller"
+                                          VerticalScrollBarVisibility="Auto"
+                                          HorizontalScrollBarVisibility="Disabled"
+                                          Padding="8,6">
+                                <ItemsControl x:Name="LogItems">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" Foreground="#FFe8dcc8"
+                                                       FontFamily="Consolas" FontSize="11"
+                                                       TextWrapping="Wrap" Margin="0,1"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Border>
+
+                    </DockPanel>
+                </DockPanel>
+            </Grid>
+        </Border>
+    </Border>
+</Window>
